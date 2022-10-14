@@ -12,14 +12,16 @@ import javax.annotation.Resource;
 @RestController
 @Slf4j
 public class OrderNacosController {
-    @Resource
-    private RestTemplate restTemplate;
+	@Resource
+	private RestTemplate restTemplate;
 
-    @Value("${service-url.nacos-user-service}")
-    private String serverURL;
+	@Value("${service-url.nacos-user-service}")
+	private String serverURL;
 
-    @GetMapping(value = "/consumer/payment/nacos/{id}")
-    public String paymentInfo(@PathVariable("id") Long id) {
-        return restTemplate.getForObject(serverURL + "/payment/nacos/" + id, String.class);
-    }
+	@GetMapping(value = "/consumer/payment/nacos/{id}")
+	public String paymentInfo(@PathVariable("id") Long id) {
+		//http://nacos-payment-provider/payment/nacos/13 负载均衡
+		//http://localhost:9001/payment/nacos/13 没有负载均衡
+		return restTemplate.getForObject(serverURL + "/payment/nacos/" + id, String.class);
+	}
 }
